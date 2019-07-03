@@ -34,10 +34,19 @@ class RealNumberOperationsTest {
             add(543);
             add(Math.PI);
         }};
-        LinkedList<Number> empty = new LinkedList<Number>();
+        LinkedList<Number> empty = new LinkedList<>();
 
         assertEquals(RealNumberOperations.sum(array), Math.E + 12);
         assertEquals(RealNumberOperations.sum(linkedList), -441 + Math.PI);
         assertEquals(RealNumberOperations.sum(empty, linkedList), -441 + Math.PI);
     }
+
+    @Test
+    void product(){
+        assertEquals(RealNumberOperations.product(0, 9),0);
+        assertEquals(RealNumberOperations.product(1, 5), 5);
+        assertEquals(RealNumberOperations.product(5, 2, 8, 2), 160);
+        assertEquals(RealNumberOperations.product(1.5, 2.97), 4.455);
+    }
+
 }

@@ -39,6 +39,16 @@ public class Mava {
 //        assertEquals(RealNumberOperations.sum(3,2), 5.0);
 //    }
 
+    //mersenne primes
+    //is a power of
+    //is prime
+    //lexographic permutations
+    //fibonacci sets
+    //lucas numbers
+    //nth factorial
+    //triangle numbers
+    //product of numbers
+
     public static void main(String[] args) {
 //        tester();
     }

@@ -5,9 +5,8 @@ public class RealNumberOperations {
     @SafeVarargs
     public static double sum(Number... numbers){
         double sum = 0;
-        for(Number n : numbers){
+        for(Number n : numbers)
             sum += n.doubleValue();
-        }
 
         return sum;
     }
@@ -24,6 +23,14 @@ public class RealNumberOperations {
         }
 
         return sum;
+    }
+
+    public static double product(Number... numbers){
+        double prod = 1;
+        for(Number n : numbers)
+            prod *= n.doubleValue();
+
+        return prod;
     }
 
 }
