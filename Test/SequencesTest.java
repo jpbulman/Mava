@@ -27,14 +27,6 @@ class SequencesTest {
     }
 
     @Test
-    void factorial(){
-        Assertions.assertEquals(Sequences.factorial(0), Sequences.factorial(1));
-        Assertions.assertEquals(Sequences.factorial(6), 720);
-
-        assertThrows(IndexOutOfBoundsException.class, () -> Sequences.factorial(-1));
-    }
-
-    @Test
     void Fibonacci(){
         Assertions.assertEquals(Sequences.getNthFibonacciNumber(1), Sequences.getNthFibonacciNumber(2));
         Assertions.assertEquals(Sequences.getNthFibonacciNumber(6), 8);

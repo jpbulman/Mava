@@ -42,6 +42,8 @@ public class ComplexNumber {
         return new ComplexNumber(a, b);
     }
 
+    //TODO: Add division
+
     public ComplexNumber minus(ComplexNumber z){
         double a = this.a - z.a;
         double b = this.b - z.b;
