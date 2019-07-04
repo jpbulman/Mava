@@ -5,6 +5,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.text.DecimalFormat;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ComplexNumberTest {
@@ -24,10 +26,21 @@ class ComplexNumberTest {
 
     @Test
     void plus() {
+        ComplexNumber c = a.plus(b);
+        assertEquals(c.getRealPart(), 6.2);
+        assertEquals(c.getComplexPart(), 4.54);
+
+        ComplexNumber d = justComplex.plus(justReal);
+        assertEquals(d.getRealPart(), 9);
+        assertEquals(d.getComplexPart(), 8);
     }
 
+    private DecimalFormat decimalFormat = new DecimalFormat("0.000");
     @Test
     void times() {
+        ComplexNumber c = a.times(b);
+        assertEquals(Double.valueOf(decimalFormat.format(c.getRealPart())), 1.604);
+        assertEquals(Double.valueOf(decimalFormat.format(c.getComplexPart())), 17.38);
     }
 
     @Test
@@ -45,5 +58,9 @@ class ComplexNumberTest {
     void conjugate() {
         assertEquals(b.conjugate().getRealPart(), 5);
         assertEquals(b.conjugate().getComplexPart(), -1.4);
+        assertEquals(justReal.conjugate().getRealPart(), 9);
+        assertEquals(justReal.conjugate().getComplexPart(), 0);
+        assertEquals(justComplex.conjugate().getRealPart(), 0);
+        assertEquals(justComplex.conjugate().getComplexPart(), -8);
     }
 }

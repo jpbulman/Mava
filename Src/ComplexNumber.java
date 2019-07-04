@@ -34,10 +34,10 @@ public class ComplexNumber {
         double d = z.b;
 
         /*
-        Form of (ac - bd) + (ad  -bc)i
+        Form of (ac - bd) + (ad + bc)i
          */
         double a = (this.a * c) - (this.b * d);
-        double b = (this.a * d) - (this.b * c);
+        double b = (this.a * d) + (this.b * c);
 
         return new ComplexNumber(a, b);
     }
@@ -59,7 +59,7 @@ public class ComplexNumber {
     }
 
     public ComplexNumber conjugate(){
-        return new ComplexNumber(this.a, -this.b);
+        return new ComplexNumber(this.a, this.b == 0 ? 0 : this.b * -1);
     }
 
 }

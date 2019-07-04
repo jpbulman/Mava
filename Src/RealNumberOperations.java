@@ -4,7 +4,6 @@ import java.util.List;
 
 public class RealNumberOperations {
 
-    @SafeVarargs
     public static double sum(Number... numbers){
         double sum = 0;
         for(Number n : numbers)
