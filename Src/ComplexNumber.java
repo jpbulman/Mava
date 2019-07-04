@@ -2,33 +2,64 @@ package Src;
 
 public class ComplexNumber {
 
-    private int a;
-    private int b;
+    //Form of a + b*i
 
-    public ComplexNumber(int a, int b){
+    //Real part
+    private double a;
+    //Complex part
+    private double b;
+
+    public ComplexNumber(double a, double b){
         this.a = a;
         this.b = b;
     }
 
-    public void add(ComplexNumber i){
-        this.a += i.a;
-        this.b += i.b;
+    public double getRealPart(){
+        return this.a;
     }
 
-    public void multiply(ComplexNumber i){
-        int c = i.a;
-        int d = i.b;
+    public double getComplexPart(){
+        return this.b;
+    }
+
+    public ComplexNumber plus(ComplexNumber z){
+        double a = this.a + z.a;
+        double b = this.b + z.b;
+
+        return new ComplexNumber(a, b);
+    }
+
+    public ComplexNumber times(ComplexNumber z){
+        double c = z.a;
+        double d = z.b;
 
         /*
         Form of (ac - bd) + (ad  -bc)i
          */
-        this.a = (this.a * c) - (this.b * d);
-        this.b = (this.a * d) - (this.b * c);
+        double a = (this.a * c) - (this.b * d);
+        double b = (this.a * d) - (this.b * c);
+
+        return new ComplexNumber(a, b);
+    }
+
+    public ComplexNumber minus(ComplexNumber z){
+        double a = this.a - z.a;
+        double b = this.b - z.b;
+
+        return new ComplexNumber(a, b);
     }
 
     public String toString(){
-        String operator = b == Math.abs(b) ? " + " : " - ";
-        return a + operator + b + "i";
+        boolean operatorIsNotNeeded = this.a == 0 || this.b == 0;
+        String operator = this.b == Math.abs(this.b) ? " + " : " - ";
+        operator = operatorIsNotNeeded ? "" : operator;
+        String a = this.a == 0 ? "" : String.valueOf(this.a);
+        String b = this.b == 0 ? "" : String.valueOf(this.b) + "i";
+        return a + operator + b;
+    }
+
+    public ComplexNumber conjugate(){
+        return new ComplexNumber(this.a, -this.b);
     }
 
 }
