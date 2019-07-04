@@ -15,6 +15,12 @@ class ComplexNumberTest {
     private final ComplexNumber b = new ComplexNumber(5, 1.4);
     private final ComplexNumber justComplex = new ComplexNumber(0, 8);
     private final ComplexNumber justReal = new ComplexNumber(9, 0);
+    private final ComplexNumber neither=  new ComplexNumber(0, 0);
+
+    //Decimal formatting gets rid of double errors
+    //Otherwise, tests will will fail because 1.74 != 1.7400000000000000000001
+    //Big decimals are still not completely accurate, so for testing purposes, this is fine
+    private DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.000");
 
     @BeforeEach
     void setUp() {
@@ -35,16 +41,25 @@ class ComplexNumberTest {
         assertEquals(d.getComplexPart(), 8);
     }
 
-    private DecimalFormat decimalFormat = new DecimalFormat("0.000");
+    /*
+    TODO: Add multiply tests with no real and no complex parts
+     */
     @Test
     void times() {
         ComplexNumber c = a.times(b);
-        assertEquals(Double.valueOf(decimalFormat.format(c.getRealPart())), 1.604);
-        assertEquals(Double.valueOf(decimalFormat.format(c.getComplexPart())), 17.38);
+        assertEquals(Double.valueOf(DECIMAL_FORMAT.format(c.getRealPart())), 1.604);
+        assertEquals(Double.valueOf(DECIMAL_FORMAT.format(c.getComplexPart())), 17.38);
     }
 
     @Test
     void minus() {
+        ComplexNumber z = a.minus(b);
+        assertEquals(Double.valueOf(DECIMAL_FORMAT.format(z.getRealPart())), -3.8);
+        assertEquals(Double.valueOf(DECIMAL_FORMAT.format(z.getComplexPart())), 1.74);
+
+        ComplexNumber d = justComplex.minus(justReal);
+        assertEquals(d.getRealPart(), -9);
+        assertEquals(d.getComplexPart(), 8);
     }
 
     @Test
@@ -52,6 +67,7 @@ class ComplexNumberTest {
         assertEquals(a.toString(), "1.2 + 3.14i");
         assertEquals(justComplex.toString(), "8.0i");
         assertEquals(justReal.toString(), "9.0");
+        assertEquals(neither.toString(), "");
     }
 
     @Test
