@@ -1,3 +1,4 @@
+package Src;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -36,7 +37,7 @@ public class Mava {
 //    }
 
 //    public static void tester(){
-//        assertEquals(RealNumberOperations.sum(3,2), 5.0);
+//        assertEquals(Src.RealNumberOperations.sum(3,2), 5.0);
 //    }
 
     //mersenne primes

@@ -1,3 +1,5 @@
+package Src;
+
 import java.util.HashMap;
 
 public class Sequences {
