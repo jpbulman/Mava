@@ -1,4 +1,4 @@
-package Src.Exception;
+package Src.Exceptions;
 
 public class CombinatoricsArgumentsException extends Exception {
 

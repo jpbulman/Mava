@@ -1,7 +1,7 @@
 package Src;
 
-import Src.Exception.CombinatoricsArgumentsException;
-import Src.Exception.NegativeArgumentException;
+import Src.Exceptions.CombinatoricsArgumentsException;
+import Src.Exceptions.NegativeArgumentException;
 
 import java.util.HashMap;
 

@@ -5,9 +5,9 @@ public class ComplexNumber {
     //Form of a + b*i
 
     //Real part
-    private double a;
+    private final double a;
     //Complex part
-    private double b;
+    private final double b;
 
     public ComplexNumber(double a, double b){
         this.a = a;
