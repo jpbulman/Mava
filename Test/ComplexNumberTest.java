@@ -15,7 +15,8 @@ class ComplexNumberTest {
     private final ComplexNumber b = new ComplexNumber(5, 1.4);
     private final ComplexNumber justComplex = new ComplexNumber(0, 8);
     private final ComplexNumber justReal = new ComplexNumber(9, 0);
-    private final ComplexNumber neither=  new ComplexNumber(0, 0);
+    private final ComplexNumber neither = new ComplexNumber(0, 0);
+    private final ComplexNumber neitherAgain = new ComplexNumber(0, 0);
 
     //Decimal formatting gets rid of double errors
     //Otherwise, tests will will fail because 1.74 != 1.7400000000000000000001
@@ -41,14 +42,15 @@ class ComplexNumberTest {
         assertEquals(d.getComplexPart(), 8);
     }
 
-    /*
-    TODO: Add multiply tests with no real and no complex parts
-     */
     @Test
     void times() {
         ComplexNumber c = a.times(b);
         assertEquals(Double.valueOf(DECIMAL_FORMAT.format(c.getRealPart())), 1.604);
         assertEquals(Double.valueOf(DECIMAL_FORMAT.format(c.getComplexPart())), 17.38);
+
+        assertTrue(b.times(justReal).equals(new ComplexNumber(45, 12.6)));
+        assertTrue(b.times(justComplex).equals(new ComplexNumber(-11.2, 40)));
+        assertTrue(b.times(neither).equals(neither));
     }
 
     @Test
@@ -79,4 +81,12 @@ class ComplexNumberTest {
         assertEquals(justComplex.conjugate().getRealPart(), 0);
         assertEquals(justComplex.conjugate().getComplexPart(), -8);
     }
+
+    @Test
+    void equals(){
+        assertTrue(neither.equals(neitherAgain));
+        assertFalse(neither.equals(a));
+        assertFalse(a.equals(b));
+    }
+
 }

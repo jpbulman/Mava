@@ -51,6 +51,7 @@ public class ComplexNumber {
         return new ComplexNumber(a, b);
     }
 
+    @Override
     public String toString(){
         boolean operatorIsNotNeeded = this.a == 0 || this.b == 0;
         String operator = this.b == Math.abs(this.b) ? " + " : " - ";
@@ -60,6 +61,11 @@ public class ComplexNumber {
         return a + operator + b;
     }
 
+    public boolean equals(ComplexNumber c){
+        return this.a == c.a && this.b == c.b;
+    }
+
+    //Conjugate is just reversing the sign of the complex part. Checks for 0 because negative 0 is not wanted
     public ComplexNumber conjugate(){
         return new ComplexNumber(this.a, this.b == 0 ? 0 : this.b * -1);
     }

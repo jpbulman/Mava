@@ -1,5 +1,8 @@
 package Src;
 
+import Src.Exception.CombinatoricsArgumentsException;
+import Src.Exception.NegativeArgumentException;
+
 import java.util.HashMap;
 
 public class NaturalNumberOperations {
@@ -18,6 +21,30 @@ public class NaturalNumberOperations {
             factorials.put(n, val);
             return val;
         }
+    }
+
+    public static int permutations(int n, int r) throws CombinatoricsArgumentsException, NegativeArgumentException {
+
+        if(n < 0 || r < 0){
+            throw new NegativeArgumentException();
+        } else if(n < r){
+            throw new CombinatoricsArgumentsException(n, r);
+        }
+
+        //Division is type safe because permutations are guaranteed to be integers
+        return factorial(n) / factorial(n - r);
+    }
+
+    public static int combinations(int n, int r) throws CombinatoricsArgumentsException, NegativeArgumentException{
+
+        if(n < 0 || r < 0){
+            throw new NegativeArgumentException();
+        } else if(n < r){
+            throw new CombinatoricsArgumentsException(n, r);
+        }
+
+        //Division is type safe because combinations are guaranteed to be integers
+        return factorial(n) / (factorial(r) * factorial(n - r));
     }
 
 }
