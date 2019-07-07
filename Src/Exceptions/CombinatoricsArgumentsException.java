@@ -1,11 +1,12 @@
 package Src.Exceptions;
 
-public class CombinatoricsArgumentsException extends Exception {
+public class CombinatoricsArgumentsException extends IndexOutOfBoundsException {
 
     private int n;
     private int r;
 
     public CombinatoricsArgumentsException(int n, int r){
+        super();
         this.n = n;
         this.r = r;
     }

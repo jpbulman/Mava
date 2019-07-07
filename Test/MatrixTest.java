@@ -7,9 +7,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixTest {
 
-    final int[][] a = {{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 0}};
+    final double[][] a = {{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 0}};
     final Matrix m1 = new Matrix(a);
-    final Matrix m2 = new Matrix(3, 3);
+    final Matrix m2 = new Matrix(0, 0);
 
     @Test
     void rowAndColumnTest(){
@@ -19,6 +19,11 @@ class MatrixTest {
 
     @Test
     void toStringTest(){
-        assertEquals(m1.toString(), "1 2 3\n4 5 6\n7 8 9");
+        assertEquals(m1.toString(), "1.0 2.0\n3.0 4.0\n5.0 6.0\n7.0 8.0\n9.0 0.0");
+    }
+
+    @Test
+    void multiply(){
+        Matrix m = m1.times(m2);
     }
 }
