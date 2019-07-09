@@ -1,6 +1,7 @@
 package Src;
 
 import Src.Exceptions.Matrices.MatrixDimensionCreationException;
+import Src.Exceptions.Matrices.MatrixDimensionMismatchException;
 import Src.Exceptions.Matrices.MatrixMultiplicationArgumentsException;
 
 import java.util.Arrays;
@@ -8,6 +9,9 @@ import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
 public class Matrix {
+
+
+    //TODO: Transpose, column constructor
 
     private final int m;
     private final int n;
@@ -56,6 +60,31 @@ public class Matrix {
                 .collect(Collectors.joining("\n"));
     }
 
+    //Take a row and a column, multiply the values at each index, and add them all up
+    //so a[0] * b[0] + a[1] * b[1] + ... + a[n] * b[n]
+    private double multiplyAndSum(double[] a, double[] b){
+        double result = 0;
+
+        for(int i = 0; i < a.length; i++){
+            double currentMultiply = a[i] * b [i];
+            result += currentMultiply;
+        }
+
+        return result;
+    }
+
+    //Since it's math, columns start at 1
+    //Could potentially be cache optimized somehow? Unsure if that would require restructuring attributes or not
+    private double[] getNthColumn(int n){
+        double[] col = new double[this.m];
+
+        for(int i = 0; i < this.m; i++){
+            col[i] = this.vals[i][n];
+        }
+
+        return col;
+    }
+
     public Matrix times(double scalar){
         double[][] newVals = new double[this.m][this.n];
 
@@ -68,33 +97,75 @@ public class Matrix {
         return new Matrix(newVals);
     }
 
-    private double multiplyAndSum(double[] a, double[] b){
-        double result = 0;
-        for(int i = 0; i < a.length; i++){
-            double currentMultiply = a[i] * b [i];
-            result += currentMultiply;
-        }
-
-        return result;
-    }
-
     public Matrix times(Matrix m) {
-        if(this.n != m.getNumberOfRows()){
+        if(this.n != m.m){
             throw new MatrixMultiplicationArgumentsException();
         }
 
-        double[][] newVals = new double[this.m][m.getNumberOfColumns()];
+        //Matrices are a x b • b x c
+        //New matrix is a x c
+        //Same thing as this.m x m.n
 
+        double[][] newVals = new double[this.m][m.n];
+
+        //Iterate through each empty rom/column of the empty matrix and fill it in accordingly
+        //Take the ith row and multi/sum the jth column
         for(int i = 0; i < this.m; i++){
-            for(int j = 0; j < m.getNumberOfColumns(); j++){
+            for(int j = 0; j < m.n; j++){
                 double[] multiplyRow = this.vals[i];
-                double[] multiplyColumn = m.vals[j];
+                double[] multiplyColumn = m.getNthColumn(j);
 
                 newVals[i][j] = multiplyAndSum(multiplyRow, multiplyColumn);
             }
         }
 
         return new Matrix(newVals);
+    }
+
+    public Matrix plus(Matrix m){
+        if(m.m != this.m && m.n != this.n){
+            throw new MatrixDimensionMismatchException();
+        } else {
+            double[][] newVals = new double[this.m][this.n];
+
+            for(int i = 0; i < this.m; i++){
+                for(int j = 0; j < this.n; j++){
+                    newVals[i][j] = this.vals[i][j] + m.vals[i][j];
+                }
+            }
+
+            return new Matrix(newVals);
+        }
+    }
+
+    public Matrix minus(Matrix m){
+        return this.plus(m.times(-1));
+    }
+
+    public boolean equals(Matrix m){
+        if (this.m != m.m || this.n != m.n){
+            return false;
+        } else {
+            for(int i = 0; i < this.m; i++){
+                for(int j = 0; j < this.n; j++){
+                    if(this.vals[i][j] != m.vals[i][j]){
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+    }
+
+    public static Matrix getIdentityMatrix(int size){
+        double[][] vals = new double[size][size];
+
+        for(int i = 0, j = 0; i < size && j < size; i++, j++){
+            vals[i][j] = 1;
+        }
+
+        return new Matrix(vals);
     }
 
 }
