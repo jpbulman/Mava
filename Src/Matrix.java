@@ -11,7 +11,7 @@ import java.util.stream.DoubleStream;
 public class Matrix {
 
 
-    //TODO: Transpose, column constructor
+    //TODO: Transpose, column constructor, rref
 
     private final int m;
     private final int n;

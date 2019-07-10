@@ -8,7 +8,7 @@ public class MatrixMultiplicationArgumentsException extends IndexOutOfBoundsExce
 
     @Override
     public String toString(){
-        return "";
+        return "When multiplying matrices, A x B must be in the form (a x n) x (n x b)";
     }
 
 }

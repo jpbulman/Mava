@@ -6,4 +6,8 @@ public class MatrixDimensionCreationException extends IndexOutOfBoundsException 
         super();
     }
 
+    @Override
+    public String toString() {
+        return "Matrix dimensions must be greater than > 0";
+    }
 }
