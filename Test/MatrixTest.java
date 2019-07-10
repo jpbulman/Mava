@@ -96,4 +96,28 @@ class MatrixTest {
         assertTrue(m1.equals(new Matrix(vals)));
     }
 
+    @Test
+    void transposeTest(){
+        assertTrue(Matrix.getIdentityMatrix(1).transpose().equals(Matrix.getIdentityMatrix(1)));
+
+        double[][] vals = {{1, 3, 5, 7, 9}, {2, 4, 6, 8, 0}};
+        Matrix transpose = new Matrix(vals);
+
+        assertTrue(transpose.equals(m1.transpose()));
+    }
+
+    @Test
+    void augmentTest(){
+        double[][] vals = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Matrix m = new Matrix(vals);
+
+        double[][] toAppend = {{4}, {7}, {0}};
+        Matrix toAppendMatrix = new Matrix(toAppend);
+
+        double[][] valsn = {{1, 2, 3, 4}, {4, 5, 6, 7}, {7, 8, 9, 0}};
+        Matrix n = new Matrix(valsn);
+
+        assertTrue(m.augmentWith(toAppendMatrix).equals(n));
+    }
+
 }

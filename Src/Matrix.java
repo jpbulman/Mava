@@ -11,7 +11,7 @@ import java.util.stream.DoubleStream;
 public class Matrix {
 
 
-    //TODO: Transpose, column constructor, rref
+    //TODO: column constructor, rref
 
     private final int m;
     private final int n;
@@ -163,6 +163,37 @@ public class Matrix {
 
         for(int i = 0, j = 0; i < size && j < size; i++, j++){
             vals[i][j] = 1;
+        }
+
+        return new Matrix(vals);
+    }
+
+    public Matrix transpose(){
+        double[][] vals = new double[this.n][this.m];
+        for(int i = 0;i < this.n; i++){
+            vals[i] = this.getNthColumn(i);
+        }
+
+        return new Matrix(vals);
+    }
+
+    public Matrix augmentWith(Matrix m){
+        if(this.m != m.m){
+            throw new MatrixDimensionMismatchException();
+        }
+
+        double[][] vals = new double[this.m][this.n + m.n];
+        for(int i = 0; i < this.m; i++){
+            for(int j = 0; j < this.n + m.n; j++){
+                //If it is in the first half of the matrix, aka **this** matrix
+                if(j < this.n){
+                    vals[i][j] = this.vals[i][j];
+                } else {
+                    //If it is in the second matrix, aka the one being augmented/appended on
+                    //J needs the offset because it is the index for the new matrix, but not for m
+                    vals[i][j] = m.vals[i][j - this.n];
+                }
+            }
         }
 
         return new Matrix(vals);
