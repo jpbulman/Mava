@@ -12,20 +12,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixTest {
 
-    final double[][] a = {{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 0}};
-    final Matrix m1 = new Matrix(a);
+    private final double[][] a = {{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 0}};
+    private final Matrix m1 = new Matrix(a);
 
-    final double[][] b = {{17, 8, 5}, {6, 9, 12}};
-    final Matrix m2 = new Matrix(b);
+    private final double[][] b = {{17, 8, 5}, {6, 9, 12}};
+    private final Matrix m2 = new Matrix(b);
 
-    final double[][] c = {{-1, 2, 3}, {4, -5, 6}, {7, 8, -9}};
-    final Matrix square = new Matrix(c);
+    private final double[][] c = {{-1, 2, 3}, {4, -5, 6}, {7, 8, -9}};
+    private final Matrix square = new Matrix(c);
 
-    final double[][] d = {{19, 3, -2}, {32, 0, -10}};
-    final Matrix m3 = new Matrix(d);
+    private final double[][] d = {{19, 3, -2}, {32, 0, -10}};
+    private final Matrix m3 = new Matrix(d);
 
-    final double[][] singleVals = {{1}};
-    final Matrix single = new Matrix(singleVals);
+    private final double[][] singleVals = {{1}};
+    private final Matrix single = new Matrix(singleVals);
+
+    private final Matrix zeros = new Matrix(3, 3);
 
     @BeforeEach
     void setUp() {
@@ -88,12 +90,16 @@ class MatrixTest {
 
         assertEquals(id3.toString(),"1.0 0.0 0.0\n0.0 1.0 0.0\n0.0 0.0 1.0");
         assertEquals(id1.toString(), "1.0");
+        assertThrows(MatrixDimensionCreationException.class, () -> Matrix.getIdentityMatrix(0));
     }
 
     @Test
     void equalsTest(){
         double [][] vals = {{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 0}};
         assertTrue(m1.equals(new Matrix(vals)));
+        assertFalse(m1.equals(m2));
+        assertFalse(zeros.equals(Matrix.getIdentityMatrix(1)));
+        assertFalse(Matrix.getIdentityMatrix(3).times(3).equals(Matrix.getIdentityMatrix(3)));
     }
 
     @Test
@@ -118,6 +124,7 @@ class MatrixTest {
         Matrix n = new Matrix(valsn);
 
         assertTrue(m.augmentWith(toAppendMatrix).equals(n));
+        assertThrows(MatrixDimensionMismatchException.class, () -> m.augmentWith(Matrix.getIdentityMatrix(1)));
     }
 
 }

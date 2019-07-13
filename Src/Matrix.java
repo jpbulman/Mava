@@ -159,6 +159,10 @@ public class Matrix {
     }
 
     public static Matrix getIdentityMatrix(int size){
+        if(size < 1){
+            throw new MatrixDimensionCreationException();
+        }
+
         double[][] vals = new double[size][size];
 
         for(int i = 0, j = 0; i < size && j < size; i++, j++){
