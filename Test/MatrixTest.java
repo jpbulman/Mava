@@ -3,7 +3,7 @@ package Test;
 import Src.Exceptions.Matrices.MatrixDimensionCreationException;
 import Src.Exceptions.Matrices.MatrixDimensionMismatchException;
 import Src.Exceptions.Matrices.MatrixMultiplicationArgumentsException;
-import Src.Matrix;
+import Src.Matrix.Matrix;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

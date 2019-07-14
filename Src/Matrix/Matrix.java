@@ -1,8 +1,9 @@
-package Src;
+package Src.Matrix;
 
 import Src.Exceptions.Matrices.MatrixDimensionCreationException;
 import Src.Exceptions.Matrices.MatrixDimensionMismatchException;
 import Src.Exceptions.Matrices.MatrixMultiplicationArgumentsException;
+import Src.Vectors.ColumnVector;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -10,10 +11,12 @@ import java.util.stream.DoubleStream;
 
 public class Matrix {
 
-
     //TODO: column constructor, rref
 
+    //Number of rows
     private final int m;
+
+    //Number of columns
     private final int n;
 
     private final double[][] vals;
@@ -42,6 +45,86 @@ public class Matrix {
             this.n = vals[0].length;
         }
     }
+
+    //Default Vector constructor, if no config is specified, default to row vector
+//    public Matrix(double[] vals){
+//        this.m = 1;
+//        int vectorLength = vals.length;
+//        this.n = vectorLength;
+//
+//        double[][] newVals = new double[1][vectorLength];
+//        for(int i = 0; i < vectorLength; i++){
+//            newVals[0][i] = vals[i];
+//        }
+//
+//        this.vals = newVals;
+//    }
+
+    protected Matrix(int m, int n, boolean isVector){
+        if(isVector){
+            if(m != 1 && n != 1){
+                throw new MatrixDimensionCreationException();
+            } else {
+                this.m = m;
+                this.n = n;
+                this.vals = new double[m][n];
+            }
+        } else {
+            this.m = m;
+            this.n = n;
+
+            this.vals = new double[m][n];
+        }
+    }
+
+    protected Matrix(double[] vectorValues, String typeOfVector){
+
+        int vectorLength = vectorValues.length;
+
+        switch (typeOfVector){
+            case "Row":
+            case "row":
+                this.m = 1;
+                this.n = vectorLength;
+                this.vals = new double[1][vectorLength];
+                break;
+            case "Column":
+            case "column":
+                this.m = vectorLength;
+                this.n = 1;
+                this.vals = new double[vectorLength][1];
+                break;
+            default:
+                throw new MatrixDimensionMismatchException();
+        }
+    }
+
+//    protected Matrix(double[] vectorValues, String type){
+//        switch (type){
+//            case "row":
+//                int vectorLength = vectorValues.length;
+//                double[][] newVals = new double[1][vectorLength];
+//                for(int j = 0; j < vectorLength; j++){
+//                    newVals[0][j] = vectorValues[j];
+//                }
+//                this.vals = newVals;
+//                this.m = 1;
+//                this.n = vectorLength;
+//                break;
+//            case "column":
+//                vectorLength = vectorValues.length;
+//                newVals = new double[1][vectorLength];
+//                for(int j = 0; j < vectorLength; j++){
+//                    newVals[0][j] = vectorValues[j];
+//                }
+//                this.vals = newVals;
+//                this.m = 1;
+//                this.n = vectorLength;
+//                break;
+//            default:
+//                throw new MatrixDimensionCreationException();
+//        }
+//    }
 
     public int getNumberOfRows(){
         return this.m;
@@ -75,14 +158,15 @@ public class Matrix {
 
     //Since it's math, columns start at 1
     //Could potentially be cache optimized somehow? Unsure if that would require restructuring attributes or not
-    private double[] getNthColumn(int n){
+    //Gets values from left to right;
+    private ColumnVector getNthColumn(int n){
         double[] col = new double[this.m];
 
         for(int i = 0; i < this.m; i++){
             col[i] = this.vals[i][n];
         }
 
-        return col;
+        return new ColumnVector(col);
     }
 
     public Matrix times(double scalar){
@@ -113,7 +197,7 @@ public class Matrix {
         for(int i = 0; i < this.m; i++){
             for(int j = 0; j < m.n; j++){
                 double[] multiplyRow = this.vals[i];
-                double[] multiplyColumn = m.getNthColumn(j);
+                double[] multiplyColumn = m.getNthColumn(j).toArray();
 
                 newVals[i][j] = multiplyAndSum(multiplyRow, multiplyColumn);
             }
@@ -136,6 +220,10 @@ public class Matrix {
 
             return new Matrix(newVals);
         }
+    }
+
+    public double[][] asArray(){
+        return this.vals;
     }
 
     public Matrix minus(Matrix m){
@@ -175,7 +263,7 @@ public class Matrix {
     public Matrix transpose(){
         double[][] vals = new double[this.n][this.m];
         for(int i = 0;i < this.n; i++){
-            vals[i] = this.getNthColumn(i);
+            vals[i] = this.getNthColumn(i).toArray();
         }
 
         return new Matrix(vals);
@@ -201,6 +289,53 @@ public class Matrix {
         }
 
         return new Matrix(vals);
+    }
+
+    //Always pass in n > 1
+    private ColumnVector getNthColumnCoveringFirstRow(int n){
+        double[] colArr = this.getNthColumn(n).toArray();
+        int vectorLength = colArr.length;
+        double[] newColArr = new double[vectorLength - 1];
+
+        System.arraycopy(colArr, 1, newColArr, 0, vectorLength - 1);
+
+        return new ColumnVector(newColArr);
+    }
+
+    public double determinant(){
+        if(this.m != this.n){
+            throw new MatrixDimensionMismatchException();
+        } else if(this.m == 1){
+            return this.vals[0][0];
+        } else if(this.m == 2){
+            return (this.vals[0][0] * this.vals[1][1]) - (this.vals[0][1] * this.vals[1][0]);
+        } else {
+            double sum = 0;
+            for(int i = 0; i < this.n; i++){
+                double currentValue = this.vals[0][i];
+
+                Matrix toFindDeterminantOf = null;
+                for(int j = 0; j < this.n; j++){
+                    if(j == i){
+                        continue;
+                    } else if (toFindDeterminantOf == null) {
+                        toFindDeterminantOf = this.getNthColumnCoveringFirstRow(j);
+                    } else {
+                        toFindDeterminantOf.augmentWith(this.getNthColumnCoveringFirstRow(j));
+                    }
+                }
+
+                double product = currentValue * toFindDeterminantOf.determinant();
+
+                if(i % 2 != 0){
+                    product *= -1;
+                }
+
+                sum += product;
+            }
+
+            return sum;
+        }
     }
 
 }
