@@ -29,6 +29,15 @@ class MatrixTest {
     private final double[][] singleVals = {{1}};
     private final Matrix single = new Matrix(singleVals);
 
+    private final double[][] fourVals = {
+            {-1, 2, 3, 4},
+            {5, -6, 7, 8},
+            {9, 10, -11, 12},
+            {13, 14, 15, -16}
+    };
+
+    private final Matrix fourByFour = new Matrix(fourVals);
+
     private final Matrix zeros = new Matrix(3, 3);
 
     @BeforeEach
@@ -143,6 +152,7 @@ class MatrixTest {
         Matrix m = new Matrix(twoByTwoValues);
         assertEquals(m.determinant(), 16);
         assertEquals(square.determinant(), 360);
+        assertEquals(fourByFour.determinant(), -36416);
                                                             //Same thing as () -> m1.det
         assertThrows(MatrixDimensionMismatchException.class, m1::determinant);
     }
