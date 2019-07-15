@@ -46,85 +46,34 @@ public class Matrix {
         }
     }
 
-    //Default Vector constructor, if no config is specified, default to row vector
-//    public Matrix(double[] vals){
-//        this.m = 1;
-//        int vectorLength = vals.length;
-//        this.n = vectorLength;
-//
-//        double[][] newVals = new double[1][vectorLength];
-//        for(int i = 0; i < vectorLength; i++){
-//            newVals[0][i] = vals[i];
-//        }
-//
-//        this.vals = newVals;
-//    }
-
-    protected Matrix(int m, int n, boolean isVector){
-        if(isVector){
-            if(m != 1 && n != 1){
-                throw new MatrixDimensionCreationException();
-            } else {
-                this.m = m;
-                this.n = n;
-                this.vals = new double[m][n];
-            }
-        } else {
-            this.m = m;
-            this.n = n;
-
-            this.vals = new double[m][n];
-        }
-    }
-
-    protected Matrix(double[] vectorValues, String typeOfVector){
-
-        int vectorLength = vectorValues.length;
-
-        switch (typeOfVector){
+    protected Matrix(double[] vectorValues, String type){
+        switch (type){
             case "Row":
             case "row":
+                int vectorLength = vectorValues.length;
+                double[][] newVals = new double[1][vectorLength];
+                for(int j = 0; j < vectorLength; j++){
+                    newVals[0][j] = vectorValues[j];
+                }
+                this.vals = newVals;
                 this.m = 1;
                 this.n = vectorLength;
-                this.vals = new double[1][vectorLength];
                 break;
             case "Column":
             case "column":
+                vectorLength = vectorValues.length;
+                newVals = new double[vectorLength][1];
+                for(int j = 0; j < vectorLength; j++){
+                    newVals[j][0] = vectorValues[j];
+                }
+                this.vals = newVals;
                 this.m = vectorLength;
                 this.n = 1;
-                this.vals = new double[vectorLength][1];
                 break;
             default:
-                throw new MatrixDimensionMismatchException();
+                throw new MatrixDimensionCreationException();
         }
     }
-
-//    protected Matrix(double[] vectorValues, String type){
-//        switch (type){
-//            case "row":
-//                int vectorLength = vectorValues.length;
-//                double[][] newVals = new double[1][vectorLength];
-//                for(int j = 0; j < vectorLength; j++){
-//                    newVals[0][j] = vectorValues[j];
-//                }
-//                this.vals = newVals;
-//                this.m = 1;
-//                this.n = vectorLength;
-//                break;
-//            case "column":
-//                vectorLength = vectorValues.length;
-//                newVals = new double[1][vectorLength];
-//                for(int j = 0; j < vectorLength; j++){
-//                    newVals[0][j] = vectorValues[j];
-//                }
-//                this.vals = newVals;
-//                this.m = 1;
-//                this.n = vectorLength;
-//                break;
-//            default:
-//                throw new MatrixDimensionCreationException();
-//        }
-//    }
 
     public int getNumberOfRows(){
         return this.m;
@@ -156,7 +105,8 @@ public class Matrix {
         return result;
     }
 
-    //Since it's math, columns start at 1
+    //Since this is CS and not Math, columns will start at 0
+        //Mostly because this is not a public method, so it'll only be available to the class and not users
     //Could potentially be cache optimized somehow? Unsure if that would require restructuring attributes or not
     //Gets values from left to right;
     private ColumnVector getNthColumn(int n){
@@ -321,7 +271,7 @@ public class Matrix {
                     } else if (toFindDeterminantOf == null) {
                         toFindDeterminantOf = this.getNthColumnCoveringFirstRow(j);
                     } else {
-                        toFindDeterminantOf.augmentWith(this.getNthColumnCoveringFirstRow(j));
+                        toFindDeterminantOf = toFindDeterminantOf.augmentWith(this.getNthColumnCoveringFirstRow(j));
                     }
                 }
 

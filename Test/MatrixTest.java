@@ -8,6 +8,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixTest {
@@ -117,7 +119,7 @@ class MatrixTest {
         double[][] vals = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
         Matrix m = new Matrix(vals);
 
-        double[][] toAppend = {{4}, {7}, {0}};
+        final double[][] toAppend = {{4}, {7}, {0}};
         Matrix toAppendMatrix = new Matrix(toAppend);
 
         double[][] valsn = {{1, 2, 3, 4}, {4, 5, 6, 7}, {7, 8, 9, 0}};
@@ -125,6 +127,24 @@ class MatrixTest {
 
         assertTrue(m.augmentWith(toAppendMatrix).equals(n));
         assertThrows(MatrixDimensionMismatchException.class, () -> m.augmentWith(Matrix.getIdentityMatrix(1)));
+    }
+
+    @Test
+    void asArrayTest(){
+        double[][] a = {{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 0}};
+        double[][] b = m1.asArray();
+        assertTrue(Arrays.deepEquals(a, b));
+    }
+
+    @Test
+    void determinantTest(){
+        assertEquals(Matrix.getIdentityMatrix(1).determinant(), 1);
+        double[][] twoByTwoValues = {{3, 4}, {2, 8}};
+        Matrix m = new Matrix(twoByTwoValues);
+        assertEquals(m.determinant(), 16);
+        assertEquals(square.determinant(), 360);
+                                                            //Same thing as () -> m1.det
+        assertThrows(MatrixDimensionMismatchException.class, m1::determinant);
     }
 
 }
