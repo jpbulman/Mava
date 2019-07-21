@@ -4,8 +4,11 @@ import Src.Exceptions.Matrices.MatrixDimensionCreationException;
 import Src.Exceptions.Matrices.MatrixDimensionMismatchException;
 import Src.Exceptions.Matrices.MatrixMultiplicationArgumentsException;
 import Src.Vectors.ColumnVector;
+import Src.Vectors.Vector;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
@@ -286,6 +289,22 @@ public class Matrix {
 
             return sum;
         }
+    }
+
+    public double getAtPosition(int i, int j){
+        return this.vals[i][j];
+    }
+
+    public boolean columnsAreLinearlyIndependent(){
+        int n = this.n;
+        
+        List<Vector> columns = new ArrayList<Vector>(){{
+            for(int i = 0; i < n; i++){
+                add(getNthColumn(i));
+            }
+        }};
+
+        return Vector.areLinearlyIndependent(columns);
     }
 
 }
