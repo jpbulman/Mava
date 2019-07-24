@@ -297,7 +297,7 @@ public class Matrix {
 
     public boolean columnsAreLinearlyIndependent(){
         int n = this.n;
-        
+
         List<Vector> columns = new ArrayList<Vector>(){{
             for(int i = 0; i < n; i++){
                 add(getNthColumn(i));

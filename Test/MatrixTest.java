@@ -27,7 +27,7 @@ class MatrixTest {
     private final Matrix m3 = new Matrix(d);
 
     private final double[][] singleVals = {{1}};
-    private final Matrix single = new Matrix(singleVals);
+    private final Matrix oneByOneMatrix = new Matrix(singleVals);
 
     private final double[][] fourVals = {
             {-1, 2, 3, 4},
@@ -36,9 +36,9 @@ class MatrixTest {
             {13, 14, 15, -16}
     };
 
-    private final Matrix fourByFour = new Matrix(fourVals);
+    private final Matrix fourByFourMatrix = new Matrix(fourVals);
 
-    private final Matrix zeros = new Matrix(3, 3);
+    private final Matrix threeByThreeMatrixWithAllZeros = new Matrix(3, 3);
 
     @BeforeEach
     void setUp() {
@@ -53,16 +53,16 @@ class MatrixTest {
         assertEquals(m1.getNumberOfRows(), 5);
         assertEquals(m1.getNumberOfColumns(), 2);
 
-        double[][] c = {{}};
+        final double[][] emptyTwoDimensionalArray = {{}};
         assertThrows(MatrixDimensionCreationException.class, () -> new Matrix(0,0));
         assertThrows(MatrixDimensionCreationException.class, () -> new Matrix(-1,0));
-        assertThrows(MatrixDimensionCreationException.class, () -> new Matrix(c));
+        assertThrows(MatrixDimensionCreationException.class, () -> new Matrix(emptyTwoDimensionalArray));
     }
 
     @Test
     void toStringTest(){
         assertEquals(m1.toString(), "1.0 2.0\n3.0 4.0\n5.0 6.0\n7.0 8.0\n9.0 0.0");
-        assertEquals(single.toString(), "1.0");
+        assertEquals(oneByOneMatrix.toString(), "1.0");
     }
 
     @Test
@@ -109,7 +109,7 @@ class MatrixTest {
         double [][] vals = {{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 0}};
         assertTrue(m1.equals(new Matrix(vals)));
         assertFalse(m1.equals(m2));
-        assertFalse(zeros.equals(Matrix.getIdentityMatrix(1)));
+        assertFalse(threeByThreeMatrixWithAllZeros.equals(Matrix.getIdentityMatrix(1)));
         assertFalse(Matrix.getIdentityMatrix(3).times(3).equals(Matrix.getIdentityMatrix(3)));
     }
 
@@ -152,9 +152,26 @@ class MatrixTest {
         Matrix m = new Matrix(twoByTwoValues);
         assertEquals(m.determinant(), 16);
         assertEquals(square.determinant(), 360);
-        assertEquals(fourByFour.determinant(), -36416);
+        assertEquals(fourByFourMatrix.determinant(), -36416);
                                                             //Same thing as () -> m1.det
         assertThrows(MatrixDimensionMismatchException.class, m1::determinant);
+    }
+
+    @Test
+    void getAtPositionTest(){
+        assertEquals(fourByFourMatrix.getAtPosition(0, 0), -1);
+        assertEquals(fourByFourMatrix.getAtPosition(2, 1), 10);
+    }
+
+    @Test
+    void columnsAreLinearlyIndependentTest(){
+        final double[][] linIndepVals = {{1, -5}, {2, 3}};
+        final Matrix independentColumndsMatrix = new Matrix(linIndepVals);
+        assertTrue(independentColumndsMatrix.columnsAreLinearlyIndependent());
+
+        final double[][] dependentValues = {{1, -5}, {2, 3}};
+        Matrix dependentColumnsMatrix = new Matrix(dependentValues);
+        assertTrue(dependentColumnsMatrix.columnsAreLinearlyIndependent());
     }
 
 }

@@ -8,7 +8,8 @@ public abstract class Vector extends Matrix {
 
     private final double[] vectorValues;
 
-    public Vector(double[] vectorValues, String typeOfVector){
+    //Constructor is only used by Vector subclasses and is abstract, so it can be package private
+    Vector(double[] vectorValues, String typeOfVector){
         super(vectorValues, typeOfVector);
         this.vectorValues = vectorValues;
     }
@@ -37,7 +38,7 @@ public abstract class Vector extends Matrix {
     public static boolean areLinearlyIndependent(List<Vector> vectors){
         Matrix m = vectors.get(0);
         for(int i = 1; i < vectors.size(); i++){
-            m.augmentWith(vectors.get(i));
+            m = m.augmentWith(vectors.get(i));
         }
 
         return m.determinant() != 0;
