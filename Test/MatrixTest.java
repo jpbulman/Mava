@@ -166,12 +166,12 @@ class MatrixTest {
     @Test
     void columnsAreLinearlyIndependentTest(){
         final double[][] linIndepVals = {{1, -5}, {2, 3}};
-        final Matrix independentColumndsMatrix = new Matrix(linIndepVals);
-        assertTrue(independentColumndsMatrix.columnsAreLinearlyIndependent());
+        final Matrix independentColumnsMatrix = new Matrix(linIndepVals);
+        assertTrue(independentColumnsMatrix.columnsAreLinearlyIndependent());
 
-        final double[][] dependentValues = {{1, -5}, {2, 3}};
+        final double[][] dependentValues = {{2, 3, 5}, {-1, -4, -10}, {1, -2, -8}};
         Matrix dependentColumnsMatrix = new Matrix(dependentValues);
-        assertTrue(dependentColumnsMatrix.columnsAreLinearlyIndependent());
+        assertFalse(dependentColumnsMatrix.columnsAreLinearlyIndependent());
     }
 
 }

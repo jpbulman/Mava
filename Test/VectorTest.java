@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class VectorTest {
 
@@ -30,9 +32,40 @@ class VectorTest {
     }
 
     @Test
+    void transposeTest(){
+        final double[] colValues = {1, 2, 3, 4};
+        final ColumnVector initColVector = new ColumnVector(colValues);
+        final RowVector rowVector = initColVector.transpose();
+
+        final double[] rowValues = {1, 2, 3, 4};
+        final RowVector initRowVector = new RowVector(rowValues);
+        final ColumnVector colVector = initRowVector.transpose();
+
+        assertTrue(rowVector.equals(initRowVector));
+        assertTrue(colVector.equals(initColVector));
+    }
+
+    @Test
     void getAtPositionTest(){
         assertEquals(columnVectorLenFive.getAtPosition(1), -1);
         assertEquals(rowVectorLenSeven.getAtPosition(6), 13);
+    }
+
+    @Test
+    void areLinearlyIndependentTest(){
+        final double[] linIndepVals1 = {1, -5};
+        final ColumnVector col1 = new ColumnVector(linIndepVals1);
+        final double[] linIndepVals2 = {2, 3};
+        final ColumnVector col2 = new ColumnVector(linIndepVals2);
+        assertTrue(ColumnVector.areLinearlyIndependent(col1, col2));
+
+        final double[] depVals1 = {2, 3, 5};
+        final double[] depVals2 = {-1, -4, -10};
+        final double[] depVals3=  {1, -2, -8};
+        final ColumnVector depCol1 = new ColumnVector(depVals1);
+        final ColumnVector depCol2 = new ColumnVector(depVals2);
+        final ColumnVector depCol3 = new ColumnVector(depVals3);
+        assertFalse(ColumnVector.areLinearlyIndependent(depCol1, depCol2, depCol3));
     }
 
 }

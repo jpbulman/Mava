@@ -26,22 +26,4 @@ public abstract class Vector extends Matrix {
         return this.vectorValues[n];
     }
 
-    public static boolean areLinearlyIndependent(Vector... vectors){
-        Matrix m = vectors[0];
-        for(int i = 1; i < vectors.length; i++){
-            m.augmentWith(vectors[i]);
-        }
-
-        return m.determinant() != 0;
-    }
-
-    public static boolean areLinearlyIndependent(List<Vector> vectors){
-        Matrix m = vectors.get(0);
-        for(int i = 1; i < vectors.size(); i++){
-            m = m.augmentWith(vectors.get(i));
-        }
-
-        return m.determinant() != 0;
-    }
-
 }
