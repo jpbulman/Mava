@@ -11,6 +11,12 @@ public class RowVector extends Vector {
     }
 
     public RowVector plus(RowVector r){
+
+        //Make exception at some point
+        if(r.length() != this.length()){
+            throw new IndexOutOfBoundsException();
+        }
+
         double[] newValues = new double[this.length()];
         for(int i = 0; i < this.length(); i++){
             newValues[i] = this.getAtPosition(i) + r.getAtPosition(i);

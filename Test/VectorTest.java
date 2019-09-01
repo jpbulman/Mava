@@ -32,6 +32,16 @@ class VectorTest {
     }
 
     @Test
+    void plusTest(){
+        final double[] colVectorLengthFiveValues2 = {-1, 1, 0, 1, 1 };
+        final ColumnVector columnVectorLenFive2 = new ColumnVector(colVectorLengthFiveValues2);
+
+        final double[] resultValues = {-1, 0, 1, 3, 4 };
+        final ColumnVector resultColumn = new ColumnVector(resultValues);
+        assertTrue(columnVectorLenFive2.plus(columnVectorLenFive).equals(resultColumn));
+    }
+
+    @Test
     void transposeTest(){
         final double[] colValues = {1, 2, 3, 4};
         final ColumnVector initColVector = new ColumnVector(colValues);

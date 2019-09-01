@@ -14,6 +14,20 @@ public class ColumnVector extends Vector {
         return new RowVector(super.toArray());
     }
 
+    public ColumnVector plus(ColumnVector r){
+
+        //Make exception at some point
+        if(r.length() != this.length()){
+            throw new IndexOutOfBoundsException();
+        }
+
+        double[] newValues = new double[this.length()];
+        for(int i = 0; i < this.length(); i++){
+            newValues[i] = this.getAtPosition(i) + r.getAtPosition(i);
+        }
+        return new ColumnVector(newValues);
+    }
+
     //Can probably be moved to vector class at some point
     public static boolean areLinearlyIndependent(ColumnVector... vectors){
         Matrix m = vectors[0];

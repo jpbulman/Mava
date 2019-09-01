@@ -2,8 +2,6 @@ package Src.Vectors;
 
 import Src.Matrix.Matrix;
 
-import java.util.List;
-
 public abstract class Vector extends Matrix {
 
     private final double[] vectorValues;
